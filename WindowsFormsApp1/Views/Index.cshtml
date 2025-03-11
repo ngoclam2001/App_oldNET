@@ -1,0 +1,221 @@
+﻿
+@using ClassDataLand
+@inherits RazorLight.TemplatePage<ClassDataLand.DataLand>
+@using System.Collections.Generic
+
+@if (Model != null)
+{
+    <div class="container" id="main_content">
+        <div class="top_info">
+            <div class="img_top">
+                <img src="https://th.bing.com/th/id/OIP.isMQuwO4bSUWcfkdKuucYwHaEK?rs=1&pid=ImgDetMain" alt="logo" crossorigin="anonymous">
+            </div>
+            <div class="text_center">
+                <h1 class="text_top text_uppercase">thông tin quyền sử dụng đất,</h1>
+                <h1 class="text_uppercase text_top">quyền sở hữu tài sản liên quan với đất</h1>
+                <span class="fs-10">(Thông tin này được lấy từ mã QR in trên Giấy xác nhận)</span>
+            </div>
+            <div class="text_right fs-10 code_pdf">
+                @Model.Id
+            </div>
+        </div>
+        <div class="content">
+            <ol class="list_info">
+                <li class="text_bold fs-10">
+                    Người sử dụng đất, chủ sử dụng tài sản gắn liền với đất:
+                </li>
+                <div class="list_person">
+                    @foreach (var item in Model.Muc1)
+                    {
+                        <div class="person"><span class="person_name">@item.Value.PersonName</span>,<span class="person_cccd">@item.Value.PersonCCCD</span></div>
+                    }
+                </div>
+                <li class="text_bold">
+                    Thông tin thửa đất:
+                </li>
+                @if (Model.IsCheckMuc2 == true)
+                {
+                    <!-- TH1: Giay chung nhan cap cho mot thua dat -->
+                    <div class="list_land land_first_case">
+                        @foreach (var item in Model.Muc2)
+                        {
+                            <div class="first_land_info">
+                                <p>a. Thừa đất số: <span class="land_number">@item.Value.LandNumber</span></p>
+                                <p>tờ bản đồ số: <span class="land_map_number">@item.Value.LandMapNumber</span></p>
+                            </div>
+                            <div class="first_land_info">
+                                <p>b. Diện tích: <span class="land_area">@item.Value.LandArea</span></p>
+                                <p>c. Loại đất: <span class="land_class">@item.Value.LandClass</span></p>
+                            </div>
+                            <p>d. Thời hạn sử dụng: <span class="land_use-date">@item.Value.LandUseDate</span></p>
+                            <p>đ. Hình thức sử dụng: <span class="land_use">@item.Value.LandUse</span></p>
+                            <p>e. Địa chỉ: <span class="land_address">@item.Value.LandAddress</span></p>
+                            <p>g. Nguồn gốc sử dụng đất: <span class="land_purpose">@item.Value.LandPurpose</span></p>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <!-- TH2: Giay chung nhan cho nhieu thua dat nong nghiep -->
+                    <div class="list_land land_second_case">
+                        <!-- load from js -->
+                        <div class="first_land_info">
+                            <p>a. Thừa đất số: <span class="land_number_s">10</span></p>
+                            <p>b. Diện tích: <span class="land_area_s">01</span></p>
+                        </div>
+                        <p>c. Địa chỉ: <span class="land_address_all">01</span></p>
+                        <p>d. Danh sách các thửa đất:</p>
+                        <table class="table_land">
+                            <tbody>
+                                <tr>
+                                    <th><p>Tờ bản đồ số</p></th>
+                                    <th><p>Thửa đất số</p></th>
+                                    <th><p>Diện tích(m2)</p></th>
+                                    <th><p>Loại đất</p></th>
+                                    <th><p>Thời hạn sử dụng</p></th>
+                                    <th><p>Hình thức sử dụng</p> </th>
+                                    <th><p>Nguồn gốc sử dụng đất</p> </th>
+                                    <th><p>Địa chỉ</p> </th>
+                                </tr>
+                                @foreach (var item in Model.Muc2)
+                                {
+                                    <tr>
+                                        <td><p>@item.Value.LandNumber</p></td>
+                                        <td><p>@item.Value.LandMapNumber</p></td>
+                                        <td><p>@item.Value.LandArea</p></td>
+                                        <td><p>@item.Value.LandClass</p></td>
+                                        <td><p>@item.Value.LandUseDate</p></td>
+                                        <td><p>@item.Value.LandUse</p></td>
+                                        <td><p>@item.Value.LandPurpose</p></td>
+                                        <td><p>@item.Value.LandAddress</p></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                <li class="text_bold">
+                    Thông tin tài sản gắn liền với đất:
+                </li>
+                <!-- Cac thong tin lien qan -->
+                <div class="land_info_asset">
+                    @foreach (var item in Model.Muc3)
+                    {
+                        <div class="first_land_info">
+                            <p>a. Tên tài sản: <span class="asset_name">@item.Value.AssetName</span></p>
+                            <p>b. Diện tích xây dựng: <span class="asset_area">@item.Value.AssetArea</span></p>
+                        </div>
+                        <div class="first_land_info">
+                            <p>c. Diện tích sử dụng: <span class="asset_use">@item.Value.AssetUse</span></p>
+                            <p>d. Số tầng: <span class="asset_floor">@item.Value.AssetNumberFloor</span></p>
+                        </div>
+                        <div class="first_land_info">
+                            <p>đ. Kết cấu: <span class="asset_structure">@item.Value.AssetStructure</span></p>
+                            <p>e. Cấp công trình: <span class="asset_level">@item.Value.AssetStructure</span></p>
+                        </div>
+                        <div class="first_land_info">
+                            <p>g. Hình thức sử dụng: <span class="asset_use">@item.Value.AssetUse</span></p>
+                            <p>h. Thời hạn sử dụng: <span class="asset_date">@item.Value.AssetUseTime</span></p>
+                        </div>
+                        <p>i. Địa chỉ: <span class="asset_address">@item.Value.AssetUseTime</span></p>
+                    }
+                </div>
+                @if (Model.IsCheckMuc3 == true)
+                {
+                    <!-- TH1: Giay chung nhan can ho hoac cong trinh -->
+                    <div class="first_case_asset">
+                        <table class="table_asset_first">
+                            <tbody>
+                                <tr>
+                                    <th>
+                                        <p>Tên tài sản</p>
+                                    </th>
+                                    <th>
+                                        <p>Diện tích xây dựng(m2)</p>
+                                    </th>
+                                    <th>
+                                        <p>Diện tích sử dụng(m2)</p>
+                                    </th>
+                                    <th>
+                                        <p>Hình thức sở hữu</p>
+                                    </th>
+                                    <th>
+                                        <p>Cấp công trình</p>
+                                    </th>
+                                    <th>
+                                        <p>Thời hạn sở hữu</p>
+                                    </th>
+                                </tr>
+                                @foreach (var item in Model.Muc3)
+                                {
+                                    <tr>
+                                        <td><p>@item.Value.AssetName</p></td>
+                                        <td><p>@item.Value.AssetArea</p></td>
+                                        <td><p>@item.Value.AssetAreaUse</p></td>
+                                        <td><p>@item.Value.AssetUse</p></td>
+                                        <td><p>@item.Value.AssetLevel</p></td>
+                                        <td><p>@item.Value.AssetUseTime</p></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <!--TH2: Giay chung nhan can ho -->
+                    <div class="second_case_asset">
+                        <table class="table_asset_second">
+                            <tbody>
+                                <tr>
+                                    <th>
+                                        <p>Tên tài sản</p>
+                                    </th>
+                                    <th>
+                                        <p>Diện tích sàn xây dựng(m2)</p>
+                                    </th>
+                                    <th>
+                                        <p>Diện tích sử dụng(m2)</p>
+                                    </th>
+                                    <th>
+                                        <p>Hình thức sở hữu</p>
+                                    </th>
+                                    <th>
+                                        <p>Thời hạn sở hữu</p>
+                                    </th>
+                                </tr>
+                                @foreach (var item in Model.Muc3)
+                                {
+                                    <tr>
+                                        <td><p>@item.Value.AssetName</p></td>
+                                        <td><p>@item.Value.AssetArea</p></td>
+                                        <td><p>@item.Value.AssetAreaUse</p></td>
+                                        <td><p>@item.Value.AssetUse</p></td>
+                                        <td><p>@item.Value.AssetUseTime</p></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                <div class="no-break">
+                <li class="text_bold">
+                    Sơ đồ thửa đất, tài sản gắn liền với đất:
+                </li>
+                <div class="image_land"><img id="image_land" src="@Model.Muc4[0]" alt="" crossorigin="anonymous"></div>
+        </div>
+
+        </ol>
+    </div>
+    </div>
+    <div class="btn_docx" style="margin-top: 16px">
+        <!-- <button id="downloadBtn">Tạo và tải xuống DOC</button> -->
+        <button class="btn_print">Tạo và tải xuống PDF</button>
+    </div>
+
+}
+else
+{
+    <p> Không có dữ liệu.</p>
+}
+
