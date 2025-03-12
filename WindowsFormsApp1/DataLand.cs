@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace ClassDataLand
 {
@@ -16,7 +12,7 @@ namespace ClassDataLand
     {
         public string LandNumber { get; set; }
         public string LandMapNumber { get; set; }
-        public string LandArea { get; set; }
+        public int LandArea { get; set; }
         public string LandClass { get; set; }
         public string LandUseDate { get; set; }
         public string LandUse { get; set; }
@@ -34,6 +30,7 @@ namespace ClassDataLand
         public string AssetLevel { get; set; }
         public string AssetUse { get; set; }
         public string AssetUseTime { get; set; }
+        public string AssetAddress { get; set; }
     }
 
     public class DataLand
