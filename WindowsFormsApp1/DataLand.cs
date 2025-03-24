@@ -6,13 +6,15 @@ namespace ClassDataLand
     {
         public string PersonName { get; set; }
         public string PersonCCCD { get; set; }
+        public string PersonQT { get; set; }
+        public string PersonFName { get; set; }
     }
 
     public class Land
     {
         public string LandNumber { get; set; }
         public string LandMapNumber { get; set; }
-        public int LandArea { get; set; }
+        public string LandArea { get; set; }
         public string LandClass { get; set; }
         public string LandUseDate { get; set; }
         public string LandUse { get; set; }
@@ -42,5 +44,6 @@ namespace ClassDataLand
         public Dictionary<int, string> Muc4 { get; set; }
         public bool IsCheckMuc2 { get; set; }
         public bool IsCheckMuc3 { get; set; }
+        public bool IsCheckMuc1 { get; set; }
     }
 }
