@@ -33,6 +33,7 @@
             this.txt_areaID = new System.Windows.Forms.TextBox();
             this.lb_check = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.lb_check1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.web_1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -81,11 +82,21 @@
             this.label1.TabIndex = 4;
             this.label1.Text = "Nhập mã giấy chứng nhận";
             // 
+            // lb_check1
+            // 
+            this.lb_check1.AutoSize = true;
+            this.lb_check1.Location = new System.Drawing.Point(466, 32);
+            this.lb_check1.Name = "lb_check1";
+            this.lb_check1.Size = new System.Drawing.Size(43, 16);
+            this.lb_check1.TabIndex = 5;
+            this.lb_check1.Text = "check";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1354, 780);
+            this.Controls.Add(this.lb_check1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lb_check);
             this.Controls.Add(this.txt_areaID);
@@ -106,6 +117,7 @@
         private System.Windows.Forms.TextBox txt_areaID;
         private System.Windows.Forms.Label lb_check;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lb_check1;
     }
 }
 
