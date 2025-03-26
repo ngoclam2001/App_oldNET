@@ -180,7 +180,7 @@
     <div class="container" id="main_content">
         <div class="top_info">
             <div class="img_top">
-                <img src="https://th.bing.com/th/id/OIP.isMQuwO4bSUWcfkdKuucYwHaEK?rs=1&pid=ImgDetMain" alt="logo" crossorigin="anonymous">
+                <img src="https://i.imgur.com/wXKCgCj.jpeg" alt="logo" crossorigin="anonymous">
             </div>
             <div class="text_center">
                 <h1 class="text_top text_uppercase">thông tin quyền sử dụng đất,</h1>
@@ -364,7 +364,7 @@
                         $('.land_second_case').show();
                         $('.land_number_total').text(muc2_List.length);
                         $('.land_address_all').text(muc2_List[0].LandAddress);
-                        $('.land_area_total').text(muc2_List.reduce((sum, land) => sum + land.LandArea, 0));
+                        $('.land_area_total').text(Number(muc2_List.reduce((sum, land) => sum + land.LandArea, 0).toFixed(2)));
 
                         muc2_List.forEach(function (land) {
                             var text_land = '<tr><td><p>' + land.LandNumber + '</p></td><td><p>' + land.LandMapNumber + '</p></td><td><p>' + land.LandArea + '</p></td><td><p>' + land.LandClass + '</p></td><td><p>' + land.LandUseDate + '</p></td><td><p>' + land.LandUse + '</p></td><td><p>' + land.LandPurpose + '</p></td><td><p>' + land.LandAddress + '</p></td></tr>';
@@ -391,8 +391,7 @@
                             AssetAddress: asset.AssetAddress,
                         });
                     }
-
-                    console.log(muc3_List);
+                    
                     if (muc3_List[0].AssetName == "Không xác định") {
                         $('.check_asset').hide();
                         $('.first_case_asset').hide();
@@ -402,10 +401,9 @@
                         
 
                         if (data.IsCheckMuc3 == true) {
-                            var all_area = muc3_List.slice(1).reduce((sum, asset) => sum + asset.AssetArea, 0);
-                            var all_area_use = muc3_List.slice(1).reduce((sum, asset) => sum + asset.AssetAreaUse, 0);
+                            var all_area = Number(muc3_List.slice(1).reduce((sum, asset) => sum + asset.AssetArea, 0).toFixed(2));
+                            var all_area_use = Number(muc3_List.slice(1).reduce((sum, asset) => sum + asset.AssetAreaUse, 0).toFixed(2));
 
-                            
                             $('.first_case_asset').show();
                             $('.second_case_asset').hide();
                             if (muc3_List.length > 1) {
@@ -417,7 +415,7 @@
                                     $('#table_asset_first').append(text_asset_1);
                                 });
                             } else {
-                                var text_asset = '<div class="first_land_info"><p>a. Tên tài sản: <span class="asset_name">' + muc3_List[0].AssetName + '</span></p><p>b. Diện tích xây dựng: <span class="asset_area">' + all_area + '</span> m2</p></div><div class="first_land_info"><p>c. Diện tích sử dụng: <span class="asset_use">' + all_area_use + '</span> m2</p><p>d. Số tầng: <span class="asset_floor">' + muc3_List[2].AssetNumberFloor + '</span></p></div><div class="first_land_info"><p>đ. Kết cấu: <span class="asset_structure">' + muc3_List[2].AssetStructure + '</span></p><p>e. Cấp công trình: <span class="asset_level">' + muc3_List[2].AssetLevel + '</span></p></div><div class="first_land_info"><p>g. Hình thức sử dụng: <span class="asset_use">' + muc3_List[2].AssetUse + '</span></p><p>h. Thời hạn sử dụng: <span class="asset_date">' + muc3_List[2].AssetUseTime + '</span></p></div><p>i. Địa chỉ: <span class="asset_address">' + muc3_List[0].AssetAddress + '</span></p>';
+                                var text_asset = '<div class="first_land_info"><p>a. Tên tài sản: <span class="asset_name">' + muc3_List[0].AssetName + '</span></p><p>b. Diện tích xây dựng: <span class="asset_area">' + muc3_List[0].AssetArea + '</span> m2</p></div><div class="first_land_info"><p>c. Diện tích sử dụng: <span class="asset_use">' + muc3_List[0].AssetAreaUse + '</span> m2</p><p>d. Số tầng: <span class="asset_floor">' + muc3_List[0].AssetNumberFloor + '</span></p></div><div class="first_land_info"><p>đ. Kết cấu: <span class="asset_structure">' + muc3_List[0].AssetStructure + '</span></p><p>e. Cấp công trình: <span class="asset_level">' + muc3_List[0].AssetLevel + '</span></p></div><div class="first_land_info"><p>g. Hình thức sử dụng: <span class="asset_use">' + muc3_List[0].AssetUse + '</span></p><p>h. Thời hạn sử dụng: <span class="asset_date">' + muc3_List[0].AssetUseTime + '</span></p></div><p>i. Địa chỉ: <span class="asset_address">' + muc3_List[0].AssetAddress + '</span></p>';
                                 $('.land_info_asset').append(text_asset);
                                 $('#table_asset_first').hide();
                             }
@@ -427,7 +425,7 @@
                             $('.first_case_asset').hide();
                             $('.second_case_asset').show();
                             if (muc3_List.length > 1) {
-                                var text_asset = '<div class="first_land_info"><p>a. Tên tài sản: <span class="asset_name">' + muc3_List[0].AssetName + '</span></p><p>b. Diện tích xây dựng: <span class="asset_area">' + muc3_List[1].AssetArea + '</span></p></div><div class="first_land_info"><p>c. Diện tích sử dụng: <span class="asset_use">' + muc3_List[1].AssetAreaUse + '</span></p><p>d. Số tầng: <span class="asset_floor">' + muc3_List[1].AssetNumberFloor + '</span></p></div><div class="first_land_info"><p>đ. Kết cấu: <span class="asset_structure">' + muc3_List[1].AssetStructure + '</span></p><p>e. Cấp công trình: <span class="asset_level">' + muc3_List[1].AssetLevel + '</span></p></div><div class="first_land_info"><p>g. Hình thức sử dụng: <span class="asset_use">' + muc3_List[1].AssetUse + '</span></p><p>h. Thời hạn sử dụng: <span class="asset_date">' + muc3_List[1].AssetUseTime + '</span></p></div><p>i. Địa chỉ: <span class="asset_address">' + muc3_List[1].AssetAddress + '</span></p>';
+                                var text_asset = '<div class="first_land_info"><p>a. Tên tài sản: <span class="asset_name">' + muc3_List[0].AssetName + '</span></p><p>b. Diện tích xây dựng: <span class="asset_area">' + muc3_List[1].AssetArea + '</span> m2</p></div><div class="first_land_info"><p>c. Diện tích sử dụng: <span class="asset_use">' + muc3_List[1].AssetAreaUse + '</span> m2</p><p>d. Số tầng: <span class="asset_floor">' + muc3_List[0].AssetNumberFloor + '</span></p></div><div class="first_land_info"><p>đ. Kết cấu: <span class="asset_structure">' + muc3_List[0].AssetStructure + '</span></p><p>e. Cấp công trình: <span class="asset_level">' + muc3_List[0].AssetLevel + '</span></p></div><div class="first_land_info"><p>g. Hình thức sử dụng: <span class="asset_use">' + muc3_List[0].AssetUse + '</span></p><p>h. Thời hạn sử dụng: <span class="asset_date">' + muc3_List[0].AssetUseTime + '</span></p></div><p>i. Địa chỉ: <span class="asset_address">' + muc3_List[0].AssetAddress + '</span></p>';
                                 $('.land_info_asset').append(text_asset);
                                 muc3_List.slice(1).forEach(function (asset) {
                                     var text_asset_2 = '<tr><td><p>' + asset.AssetName + '</p></td><td><p>' + asset.AssetArea + '</p></td><td><p>' + asset.AssetAreaUse + '</p></td><td><p>' + asset.AssetUse + '</p></td><td><p>' + muc3_List[1].AssetUseTime + '</p></td></tr>';
@@ -435,7 +433,7 @@
                                     $('#table_asset_second').append(text_asset_2);
                                 });
                             } else {
-                                var text_asset = '<div class="first_land_info"><p>a. Tên tài sản: <span class="asset_name">' + muc3_List[0].AssetName + '</span></p><p>b. Diện tích xây dựng: <span class="asset_area">' + muc3_List[1].AssetArea + '</span></p></div><div class="first_land_info"><p>c. Diện tích sử dụng: <span class="asset_use">' + muc3_List[1].AssetAreaUse + '</span></p><p>d. Số tầng: <span class="asset_floor">' + muc3_List[1].AssetNumberFloor + '</span></p></div><div class="first_land_info"><p>đ. Kết cấu: <span class="asset_structure">' + muc3_List[1].AssetStructure + '</span></p><p>e. Cấp công trình: <span class="asset_level">' + muc3_List[1].AssetLevel + '</span></p></div><div class="first_land_info"><p>g. Hình thức sử dụng: <span class="asset_use">' + muc3_List[1].AssetUse + '</span></p><p>h. Thời hạn sử dụng: <span class="asset_date">' + muc3_List[1].AssetUseTime + '</span></p></div><p>i. Địa chỉ: <span class="asset_address">' + muc3_List[1].AssetAddress + '</span></p>';
+                                var text_asset = '<div class="first_land_info"><p>a. Tên tài sản: <span class="asset_name">' + muc3_List[0].AssetName + '</span></p><p>b. Diện tích xây dựng: <span class="asset_area">' + muc3_List[0].AssetArea + '</span> m2</p></div><div class="first_land_info"><p>c. Diện tích sử dụng: <span class="asset_use">' + muc3_List[0].AssetAreaUse + '</span> m2</p><p>d. Số tầng: <span class="asset_floor">' + muc3_List[0].AssetNumberFloor + '</span></p></div><div class="first_land_info"><p>đ. Kết cấu: <span class="asset_structure">' + muc3_List[0].AssetStructure + '</span></p><p>e. Cấp công trình: <span class="asset_level">' + muc3_List[0].AssetLevel + '</span></p></div><div class="first_land_info"><p>g. Hình thức sử dụng: <span class="asset_use">' + muc3_List[0].AssetUse + '</span></p><p>h. Thời hạn sử dụng: <span class="asset_date">' + muc3_List[0].AssetUseTime + '</span></p></div><p>i. Địa chỉ: <span class="asset_address">' + muc3_List[0].AssetAddress + '</span></p>';
                                 $('#table_asset_second').hide();
                                 $('.land_info_asset').append(text_asset);
                             }

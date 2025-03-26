@@ -3,12 +3,10 @@ using Microsoft.Web.WebView2.Core;
 using RazorLight;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Windows.Forms;
-using System.Data;
 using System.Data.SqlClient;
-using System.Drawing;
-using System.ComponentModel.Design;
+using System.IO;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace WindowsFormsApp1
 {
@@ -98,14 +96,6 @@ namespace WindowsFormsApp1
             web_1.CoreWebView2.PostWebMessageAsJson(json);
         }
 
-        private bool SearchInArray<T>(T[] array, T element)
-        {
-            if (array == null || array.Length == 0)
-                return false;
-
-            return Array.IndexOf(array, element) != -1;
-        }
-
         private void get_data(string id)
         {
             using (SqlConnection conn = new SqlConnection(cnn))
@@ -171,10 +161,13 @@ namespace WindowsFormsApp1
                                             }
                                         }
 
-                                        string[] listDT = { "1", "8", "15", "18", "19", "21", "22", "23", "9", "10" };
+                                        
+                                        List<string> listDT = new List<string> { "1", "8", "15", "18", "19", "21", "22", "23"};
+                                        bool CList = listDT.Contains(loaiDT);
+                                        lb_check1.Text = loaiDT;
 
                                         //ca nhan
-                                        if (SearchInArray(listDT, loaiDT))
+                                        if (CList)
                                         {
                                             checkMuc1 = true;
                                             if (hoten2 == "")
@@ -201,7 +194,7 @@ namespace WindowsFormsApp1
                                                         string qt1 = reader_name["quocTichID11"].ToString();
                                                         string qt2 = reader_name["quocTichID12"].ToString();
 
-                                                        if(qt1 != "" && qt2 != "")
+                                                        if (qt1 != "" && qt2 != "")
                                                         {
                                                             if (qt1 != "231" && qt2 == "231")
                                                             {
@@ -233,7 +226,7 @@ namespace WindowsFormsApp1
                                                                 }
                                                             }
                                                         }
-                                                        
+
 
 
                                                     }
@@ -322,7 +315,7 @@ namespace WindowsFormsApp1
 
                                                             if (qt11 != "231" && qt12 == "231")
                                                             {
-                                                                using (SqlCommand command_qt = new SqlCommand("SELECT tenQuocGia FROM dbo.QuocTich WHERE quocGiaId = @Id", conn))
+                                                                using (SqlCommand command_qt = new SqlCommand("SELECT tenQuocGia FROM dbo.QuocTich WHERE quocTichId = @Id", conn))
                                                                 {
                                                                     command_qt.Parameters.AddWithValue("@Id", qt11);
                                                                     using (SqlDataReader reader_qt = command_qt.ExecuteReader())
@@ -338,7 +331,7 @@ namespace WindowsFormsApp1
 
                                                             if (qt11 == "231" && qt12 != "231")
                                                             {
-                                                                using (SqlCommand command_qt = new SqlCommand("SELECT tenQuocGia FROM dbo.QuocTich WHERE quocGiaId = @Id", conn))
+                                                                using (SqlCommand command_qt = new SqlCommand("SELECT tenQuocGia FROM dbo.QuocTich WHERE quocTichId = @Id", conn))
                                                                 {
                                                                     command_qt.Parameters.AddWithValue("@Id", qt12);
                                                                     using (SqlDataReader reader_qt = command_qt.ExecuteReader())
@@ -358,7 +351,7 @@ namespace WindowsFormsApp1
 
                                                             if (qt21 != "231" && qt22 == "231")
                                                             {
-                                                                using (SqlCommand command_qt = new SqlCommand("SELECT tenQuocGia FROM dbo.QuocTich WHERE quocGiaId = @Id", conn))
+                                                                using (SqlCommand command_qt = new SqlCommand("SELECT tenQuocGia FROM dbo.QuocTich WHERE quocTichId = @Id", conn))
                                                                 {
                                                                     command_qt.Parameters.AddWithValue("@Id", qt21);
                                                                     using (SqlDataReader reader_qt = command_qt.ExecuteReader())
@@ -374,7 +367,7 @@ namespace WindowsFormsApp1
 
                                                             if (qt21 == "231" && qt22 != "231")
                                                             {
-                                                                using (SqlCommand command_qt = new SqlCommand("SELECT tenQuocGia FROM dbo.QuocTich WHERE quocGiaId = @Id", conn))
+                                                                using (SqlCommand command_qt = new SqlCommand("SELECT tenQuocGia FROM dbo.QuocTich WHERE quocTichId = @Id", conn))
                                                                 {
                                                                     command_qt.Parameters.AddWithValue("@Id", qt22);
                                                                     using (SqlDataReader reader_qt = command_qt.ExecuteReader())
@@ -457,6 +450,13 @@ namespace WindowsFormsApp1
                                                     }
                                                 }
                                             }
+
+                                            dataLand.Muc1.Add(personCount, new Person
+                                            {
+                                                PersonName = personName,
+                                                PersonCCCD = personCCCD,
+                                                PersonQT = personQT
+                                            });
                                         }
                                     }
 
@@ -537,7 +537,7 @@ namespace WindowsFormsApp1
                                                     if (reader_land_info_3.Read())
                                                     {
                                                         string md_id = reader_land_info_3["loaiNguonGocSuDungDatId"].ToString();
-                                                        using (SqlCommand command_land_info_4 = new SqlCommand("SELECT tenNguonGocSuDungDat FROM dbo.LoaiNguonGocSuDungDat WHERE loaiNguonGocSuDungDatId = @Id", conn))
+                                                        using (SqlCommand command_land_info_4 = new SqlCommand("SELECT tenNguonGocSuDungDat FROM dbo.LoaiNguonG5ocSuDungDat WHERE loaiNguonGocSuDungDatId = @Id", conn))
                                                         {
                                                             command_land_info_4.Parameters.AddWithValue("@Id", md_id);
                                                             using (SqlDataReader reader_land_info_4 = command_land_info_4.ExecuteReader())
@@ -575,7 +575,7 @@ namespace WindowsFormsApp1
                                                 LandPurpose = landPurpose
                                             });
                                             landCount++;
-                                        } 
+                                        }
                                     }
                                     else
                                     {
@@ -615,7 +615,7 @@ namespace WindowsFormsApp1
                                             if (assetCount > 1)
                                             {
                                                 //lay ten hang muc, dien tich san, dien tich xay dung, thoi han so huu
-                                                string query_2 = "SELECT tenHangMuc,dienTichXayDung,dienTichSan,thoiHanSoHuu FROM dbo.HangMucCongTrinhXayDung WHERE hangMucCongTrinhXayDungId = @Id";
+                                                string query_2 = "SELECT tenHangMuc,dienTichXayDung,dienTichSan,thoiHanSoHuu,soTang FROM dbo.HangMucCongTrinhXayDung WHERE hangMucCongTrinhXayDungId = @Id";
                                                 using (SqlCommand command_2 = new SqlCommand(query_2, conn))
                                                 {
                                                     command_2.Parameters.AddWithValue("@Id", hangMucId);
@@ -627,6 +627,7 @@ namespace WindowsFormsApp1
                                                             assetArea = reader_5["dienTichSan"].ToString();
                                                             assetAreaUse = reader_5["dienTichXayDung"].ToString();
                                                             assetUseTime = reader_5["thoiHanSoHuu"].ToString();
+                                                            assetNumberFloor = reader_5["soTang"].ToString();
                                                         }
                                                     }
                                                 }
@@ -681,7 +682,7 @@ namespace WindowsFormsApp1
                                             //thong tin chung 
                                             else
                                             {
-                                                //lay ten cong trinh, dia chi, cac thong so con lai lay tu item thu 2
+                                                //lay ten cong trinh, dia chi
                                                 string query_1 = "SELECT tenCongTrinh,diaChi FROM dbo.CongTrinhXayDung  WHERE congTrinhXayDungId = @Id";
                                                 using (SqlCommand command_1 = new SqlCommand(query_1, conn))
                                                 {
@@ -703,7 +704,76 @@ namespace WindowsFormsApp1
                                                         }
                                                     }
                                                 }
+
+                                                //lay ten hang muc, dien tich san, dien tich xay dung, thoi han so huu
+                                                string query_2 = "SELECT tenHangMuc,dienTichXayDung,dienTichSan,thoiHanSoHuu,soTang FROM dbo.HangMucCongTrinhXayDung WHERE hangMucCongTrinhXayDungId = @Id";
+                                                using (SqlCommand command_2 = new SqlCommand(query_2, conn))
+                                                {
+                                                    command_2.Parameters.AddWithValue("@Id", hangMucId);
+                                                    using (SqlDataReader reader_5 = command_2.ExecuteReader())
+                                                    {
+                                                        if (reader_5.Read())
+                                                        {
+                                                            assetName = reader_5["tenHangMuc"].ToString();
+                                                            assetArea = reader_5["dienTichSan"].ToString();
+                                                            assetAreaUse = reader_5["dienTichXayDung"].ToString();
+                                                            assetUseTime = reader_5["thoiHanSoHuu"].ToString();
+                                                            assetNumberFloor = reader_5["soTang"].ToString();
+                                                        }
+                                                    }
+                                                }
+
+                                                //lay cap cong trinh
+                                                string query_3 = "SELECT loaiCapCongTrinhId FROM dbo.HangMucCongTrinhXayDung WHERE congTrinhXayDungId = @Id";
+                                                using (SqlCommand command_3 = new SqlCommand(query_3, conn))
+                                                {
+                                                    command_3.Parameters.AddWithValue("@Id", assetId);
+                                                    using (SqlDataReader reader_6 = command_3.ExecuteReader())
+                                                    {
+                                                        if (reader_6.Read())
+                                                        {
+                                                            string ccc_id = reader_6["loaiCapCongTrinhId"].ToString();
+                                                            using (SqlCommand command_4 = new SqlCommand("SELECT maCapCongTrinh FROM dbo.LoaiCapCongTrinh WHERE loaiCapCongTrinhId = @Id", conn))
+                                                            {
+                                                                command_4.Parameters.AddWithValue("@Id", ccc_id);
+                                                                using (SqlDataReader reader_7 = command_4.ExecuteReader())
+                                                                {
+                                                                    if (reader_7.Read())
+                                                                    {
+                                                                        assetLevel = reader_7["maCapCongTrinh"].ToString();
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+
+                                                //lay ra hinh thuc su dung
+                                                string query_4 = "SELECT dongSuDung FROM dbo.DangKyCongTrinh WHERE giayChungNhanId = @Id";
+                                                using (SqlCommand command_4 = new SqlCommand(query_4, conn))
+                                                {
+                                                    command_4.Parameters.AddWithValue("@Id", id);
+                                                    using (SqlDataReader reader_8 = command_4.ExecuteReader())
+                                                    {
+                                                        if (reader_8.Read())
+                                                        {
+                                                            assetUse = reader_8["dongSuDung"].ToString();
+                                                            if (assetUse == "1")
+                                                            {
+                                                                assetUse = "Sử dụng chung";
+                                                            }
+                                                            else
+                                                            {
+                                                                assetUse = "Sử dụng riêng";
+                                                            }
+                                                        }
+                                                    }
+                                                }
+
                                             }
+                                            if (assetNumberFloor == "") assetNumberFloor = "1";
+                                            if (assetUseTime == "") assetUseTime = "Chưa có thông tin";
+                                            if (assetName == "") assetName = "Chưa có thông tin";
                                             dataLand.Muc3.Add(assetCount, new Asset
                                             {
                                                 AssetName = assetName,
@@ -748,7 +818,7 @@ namespace WindowsFormsApp1
                                                         if (assetCount > 1)
                                                         {
                                                             string query_1 = "SELECT tenHangMucNha,dienTichSan,thoiHanSoHuu,soHuuChung FROM dbo.HangMucNha WHERE nhaId = @Id";
-                                                            using(SqlCommand command1 =  new SqlCommand(query_1, conn))
+                                                            using (SqlCommand command1 = new SqlCommand(query_1, conn))
                                                             {
                                                                 command1.Parameters.AddWithValue("@Id", reader_9["nhaId"].ToString());
                                                                 using (SqlDataReader reader_10 = command1.ExecuteReader())
@@ -766,6 +836,7 @@ namespace WindowsFormsApp1
                                                                         {
                                                                             assetUse = "Sử dụng riêng";
                                                                         }
+                                                                        if (assetName == "") assetName = "Chưa có thông tin";
                                                                         dataLand.Muc3.Add(assetCount, new Asset
                                                                         {
                                                                             AssetName = assetName,
@@ -782,8 +853,8 @@ namespace WindowsFormsApp1
                                                                     }
                                                                 }
                                                             }
-                                                            
-                                                           
+
+
                                                         }
                                                         else
                                                         {
@@ -901,6 +972,8 @@ namespace WindowsFormsApp1
                                                                 }
                                                             }
                                                         }
+                                                        if (assetName == "") assetName = "Chưa có thông tin";
+
                                                         dataLand.Muc3.Add(assetCount, new Asset
                                                         {
                                                             AssetName = assetName,
@@ -914,31 +987,36 @@ namespace WindowsFormsApp1
                                                             AssetAddress = assetAddress
                                                         });
                                                         assetCount++;
-                                                    }    
+                                                    }
                                                 }
                                                 //neu khong co hang muc nha
                                                 else
                                                 {
-                                                    string query_home_1 = "SELECT nhaId FROM dbo.DangKyNha  WHERE giayChungNhanId = @Id";
+                                                    string query_home_1 = "SELECT nhaId,dongSuDung FROM dbo.DangKyNha  WHERE giayChungNhanId = @Id";
                                                     using (SqlCommand command_home_1 = new SqlCommand(query_home_1, conn))
                                                     {
                                                         command_home_1.Parameters.AddWithValue("@Id", id);
                                                         using (SqlDataReader reader_10 = command_home_1.ExecuteReader())
                                                         {
+                                                            //co thong tin
                                                             if (reader_10.HasRows)
                                                             {
                                                                 string assetId = "";
-                                                                while (reader_10.Read())
+                                                                List<int> results = new List<int>();
+                                                                if (reader_10.Read())
                                                                 {
                                                                     assetId = reader_10["nhaId"].ToString();
+                                                                    int check = 0;
+                                                                    int.TryParse(reader_10["dongSuDung"].ToString(), out check);
+                                                                    results.Add(check);
                                                                 }
                                                                 int assetCount = 1;
                                                                 string chungcuId = "";
                                                                 string loaiNhaId = "";
 
-                                                                if(assetId != "")
+                                                                if (assetId != "")
                                                                 {
-                                                                    string query_chungcu = "SELECT chungCuId,loaiCapNhaId FROM dbo.Nha  WHERE nhaId = @Id";
+                                                                    string query_chungcu = "SELECT chungCuId,loaiCapNhaId,loaiTaiSanId FROM dbo.Nha  WHERE nhaId = @Id";
                                                                     using (SqlCommand command_chungcu = new SqlCommand(query_chungcu, conn))
                                                                     {
                                                                         command_chungcu.Parameters.AddWithValue("@Id", assetId);
@@ -952,22 +1030,21 @@ namespace WindowsFormsApp1
                                                                         }
                                                                     }
 
-                                                                    while (reader_10.Read())
+                                                                    foreach (var item in results)
                                                                     {
-                                                                        string assetName = "";
-                                                                        string assetArea = "";
-                                                                        string assetAreaUse = "";
-                                                                        string assetNumberFloor = "";
-                                                                        string assetStructure = "";
-                                                                        string assetLevel = "";
-                                                                        string assetUse = "";
-                                                                        string assetUseTime = "";
-                                                                        string assetAddress = "";
-
-                                                                        int.TryParse(reader_10["dongSuDung"].ToString(), out int check);
+                                                                        string assetName = "Chưa có thông tin";
+                                                                        string assetArea = "0";
+                                                                        string assetAreaUse = "0";
+                                                                        string assetNumberFloor = "1";
+                                                                        string assetStructure = "Chưa có thông tin";
+                                                                        string assetLevel = "Chưa có thông tin";
+                                                                        string assetUse = "Chưa có thông tin";
+                                                                        string assetUseTime = "Chưa có thông tin";
+                                                                        string assetAddress = "Chưa có thông tin";
+                                                                        string taisanID = reader_10["loaiTaiSanId"].ToString();
 
                                                                         //tai san la chung cu
-                                                                        if (chungcuId != null)
+                                                                        if (chungcuId != "")
                                                                         {
                                                                             assetCount = 1;
                                                                             string query_1 = "SELECT dienTichXayDung,dienTichSan,ketCauChiTiet,diaChi,soTang FROM dbo.ChungCu  WHERE chungCuId = @Id";
@@ -1000,7 +1077,20 @@ namespace WindowsFormsApp1
                                                                                 }
                                                                             }
 
-                                                                            if (check == 0)
+                                                                            string query_3 = "SELECT tenLoaiTaiSan FROM dbo.LoaiTaiSan WHERE loaiTaiSanId = @Id";
+                                                                            using (SqlCommand command_3 = new SqlCommand(query_3, conn))
+                                                                            {
+                                                                                command_3.Parameters.AddWithValue("@Id", taisanID);
+                                                                                using (SqlDataReader reader_6 = command_3.ExecuteReader())
+                                                                                {
+                                                                                    if (reader_6.Read())
+                                                                                    {
+                                                                                        assetName = reader_6["tenLoaiTaiSan"].ToString();
+                                                                                    }
+                                                                                }
+                                                                            }
+
+                                                                            if (item == 0)
                                                                             {
                                                                                 assetUse = "Sử dụng chung";
                                                                             }
@@ -1037,7 +1127,7 @@ namespace WindowsFormsApp1
                                                                                     {
                                                                                         assetAddress = reader_4["diaChi"].ToString();
                                                                                         assetArea = reader_4["dienTichSan"].ToString();
-                                                                                        assetAreaUse = reader_4["dienTichSuDung"].ToString();
+                                                                                        assetAreaUse = reader_4["dienTichXayDung"].ToString();
                                                                                         assetStructure = reader_4["ketCauChiTiet"].ToString();
                                                                                         assetNumberFloor = reader_4["soTang"].ToString();
                                                                                     }
@@ -1057,7 +1147,21 @@ namespace WindowsFormsApp1
                                                                                 }
                                                                             }
 
-                                                                            if (check == 0)
+                                                                            string query_3 = "SELECT tenLoaiTaiSan FROM dbo.LoaiTaiSan WHERE loaiTaiSanId = @Id";
+                                                                            using (SqlCommand command_3 = new SqlCommand(query_3, conn))
+                                                                            {
+                                                                                command_3.Parameters.AddWithValue("@Id", taisanID);
+                                                                                using (SqlDataReader reader_6 = command_3.ExecuteReader())
+                                                                                {
+                                                                                    if (reader_6.Read())
+                                                                                    {
+                                                                                        assetName = reader_6["tenLoaiTaiSan"].ToString();
+                                                                                    }
+                                                                                }
+                                                                            }
+
+
+                                                                            if (item == 0)
                                                                             {
                                                                                 assetUse = "Sử dụng chung";
                                                                             }
@@ -1065,8 +1169,7 @@ namespace WindowsFormsApp1
                                                                             {
                                                                                 assetUse = "Sử dụng riêng";
                                                                             }
-
-                                                                            //thieu ten tai san
+                                                                           
                                                                             dataLand.Muc3.Add(assetCount, new Asset
                                                                             {
                                                                                 AssetName = assetName,
@@ -1083,7 +1186,23 @@ namespace WindowsFormsApp1
                                                                         }
                                                                     }
                                                                 }
+                                                                else
+                                                                {
+                                                                    dataLand.Muc3.Add(1, new Asset
+                                                                    {
+                                                                        AssetName = "Không xác định",
+                                                                        AssetArea = "Không xác định",
+                                                                        AssetAreaUse = "Không xác định",
+                                                                        AssetNumberFloor = "Không xác định",
+                                                                        AssetStructure = "Không xác định",
+                                                                        AssetLevel = "Không xác định",
+                                                                        AssetUse = "Không xác định",
+                                                                        AssetUseTime = "Không xác định",
+                                                                        AssetAddress = "Không xác định"
+                                                                    });
+                                                                }
                                                             }
+                                                            //khong co thong tin
                                                             else
                                                             {
                                                                 dataLand.Muc3.Add(1, new Asset
@@ -1102,10 +1221,10 @@ namespace WindowsFormsApp1
                                                         }
                                                     }
                                                 }
-                                                
+
                                             }
                                         }
-                                        
+
                                     }
                                 }
                             }
