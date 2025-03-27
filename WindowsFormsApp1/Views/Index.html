@@ -61,7 +61,7 @@
         }
 
     .text_top {
-        font-size: 12px;
+        font-size: 17.5px;
         margin: 0;
     }
 
@@ -129,7 +129,7 @@
     }
 
     .fs-10, li, span, p {
-        font-size: 10px;
+        font-size: 17.5px;
     }
 
     .hide {
@@ -164,7 +164,7 @@
         html, body {
             width: 100%;
             height: auto;
-            font-size: 10px;
+            font-size: 17.5px;
         }
 
         @page {
@@ -185,7 +185,7 @@
             <div class="text_center">
                 <h1 class="text_top text_uppercase">thông tin quyền sử dụng đất,</h1>
                 <h1 class="text_uppercase text_top">quyền sở hữu tài sản liên quan với đất</h1>
-                <span class="fs-10">(Thông tin này được lấy từ mã QR in trên Giấy xác nhận)</span>
+                <span class="fs-10">(Thông tin này được lấy từ mã QR in trên Giấy chứng nhận)</span>
             </div>
             <div class="text_right fs-10 code_pdf">
                 
@@ -348,6 +348,7 @@
                     }
                     
                     const muc2_List_Count = muc2_List.length;
+                    console.log(muc2_List);
 
                     if (muc2_List_Count <= 1) {
                         $('.land_first_case').show();
@@ -467,7 +468,7 @@
             $(document).on("click", ".btn_print", function (event) {
                 event.preventDefault();
 
-                var element = $("#main_content")[0]; // Lấy phần tử DOM từ jQuery object
+                var element = $("#main_content")[0];
 
                 var opt = {
                     margin: [27, 16, 27, 16],
