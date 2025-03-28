@@ -29,8 +29,8 @@
     }
 
     body {
-        height: 842px;
-        width: 595px;
+        height: 100%;
+        width: 950px;
         background: white;
         font-family: Arial, Helvetica, sans-serif;
     }
@@ -80,7 +80,7 @@
     }
 
     .content {
-        max-width: 850px;
+        max-width: 950px;
         margin: 0 auto;
         padding: 0 16px;
     }
@@ -353,7 +353,6 @@
                     if (muc2_List_Count <= 1) {
                         $('.land_first_case').show();
                         $('.land_second_case').hide();
-                        console.log(muc2_List);
 
                         muc2_List.forEach(function (land) {
                             var text_land = '<div class="first_land_info"><p>a. Thừa đất số: <span class="land_number">' + land.LandNumber + '</span></p><p>tờ bản đồ số: <span class="land_map_number">' + land.LandMapNumber + '</span></p></div><div class="first_land_info"><p>b. Diện tích: <span class="land_area">' + land.LandArea + '</span> m2</p><p>c. Loại đất: <span class="land_class">' + land.LandClass + '</span></p></div><p>d. Thời hạn sử dụng: <span class="land_use-date">' + land.LandUseDate + '</span></p><p>đ. Hình thức sử dụng: <span class="land_use">' + land.LandUse + '</span></p><p>e. Địa chỉ: <span class="land_address">' + land.LandAddress + '</span></p><p>g. Nguồn gốc sử dụng đất: <span class="land_purpose">' + land.LandPurpose + '</span></p>';

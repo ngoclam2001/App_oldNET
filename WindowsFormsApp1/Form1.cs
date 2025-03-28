@@ -474,62 +474,134 @@ namespace WindowsFormsApp1
                                     int landCount = 1;
                                     if (reader_21.HasRows)
                                     {
+                                        List<int> results = new List<int>();
                                         while (reader_21.Read())
                                         {
-                                            string thuaDatId = reader_21["thuaDatId"].ToString();
-                                            string landNumber = "";
-                                            string landMapNumber = "";
-                                            string landArea = "";
-                                            string landClass = "";
-                                            string landUseDate = "";
-                                            string landUse = "";
-                                            string landAddress = "";
-                                            string landPurpose = "";
+                                            string landid = reader_21["thuaDatId"].ToString();
+                                            int check = 0;
+                                            int.TryParse(reader_21["dongSuDung"].ToString(), out check);
+                                            results.Add(check);
+                                        }
+                                        int countLand = results.Count;
+                                        string thuaDatId = reader_21["thuaDatId"].ToString();
+                                        string landNumber = "";
+                                        string landMapNumber = "";
+                                        string landArea = "";
+                                        string landClass = "";
+                                        string landUseDate = "";
+                                        string landUse = "";
+                                        string landAddress = "";
+                                        string landPurpose = "";
 
-                                            //lay ra so thu tu thua, so hieu ban do, dien tich, thoi han su dung
-                                            using (SqlCommand command_land_info = new SqlCommand("SELECT soThuTuThua,soHieuToBanDo,dienTich,thoiHanSuDung FROM dbo.DaMucDichSuDung WHERE thuaDatId = @Id", conn))
-                                            {
-                                                command_land_info.Parameters.AddWithValue("@Id", thuaDatId);
-                                                using (SqlDataReader reader_land_info = command_land_info.ExecuteReader())
-                                                {
-                                                    if (reader_land_info.Read())
-                                                    {
-                                                        landNumber = reader_land_info["soThuTuThua"].ToString();
-                                                        landMapNumber = reader_land_info["soHieuToBanDo"].ToString();
-                                                        landArea = reader_land_info["dienTich"].ToString();
-                                                        landUseDate = reader_land_info["thoiHanSuDung"].ToString();
-                                                    }
-                                                }
-                                            }
 
-                                            //lay ra dia chi, loai dat
-                                            using (SqlCommand command_land_info_2 = new SqlCommand("SELECT diaChi,khuDanCu,datDoThi FROM dbo.ThuaDat WHERE thuaDatId = @Id", conn))
+
+                                        //truong hop nhieu thua dat
+                                        if (countLand > 1)
+                                        {
+                                            checkMuc2 = true;
+                                            foreach (var items in results)
                                             {
-                                                command_land_info_2.Parameters.AddWithValue("@Id", thuaDatId);
-                                                using (SqlDataReader reader_land_info_2 = command_land_info_2.ExecuteReader())
+                                                //lay ra nguon goc su dung
+                                                using (SqlCommand command_land_info_3 = new SqlCommand("SELECT loaiNguonGocSuDungDatId FROM dbo.NguonGocGiaoDat WHERE thuaDatId = @Id", conn))
                                                 {
-                                                    if (reader_land_info_2.Read())
+                                                    command_land_info_3.Parameters.AddWithValue("@Id", thuaDatId);
+                                                    using (SqlDataReader reader_land_info_3 = command_land_info_3.ExecuteReader())
                                                     {
-                                                        landAddress = reader_land_info_2["diaChi"].ToString();
-                                                        string check_dancu = reader_land_info_2["khuDanCu"].ToString();
-                                                        string check_dothi = reader_land_info_2["datDoThi"].ToString();
-                                                        if (check_dancu == "1" && check_dothi == "0")
+                                                        if (reader_land_info_3.Read())
                                                         {
-                                                            landClass = "Khu dân cư";
-                                                        }
-                                                        else if (check_dancu == "0" && check_dothi == "1")
-                                                        {
-                                                            landClass = "Đất đô thị";
-                                                        }
-                                                        else
-                                                        {
-                                                            landClass = "Khu dân cư và Đất đô thị";
+                                                            string md_id = reader_land_info_3["loaiNguonGocSuDungDatId"].ToString();
+                                                            using (SqlCommand command_land_info_4 = new SqlCommand("SELECT tenNguonGocSuDungDat FROM dbo.LoaiNguonGocSuDungDat WHERE loaiNguonGocSuDungDatId = @Id", conn))
+                                                            {
+                                                                command_land_info_4.Parameters.AddWithValue("@Id", md_id);
+                                                                using (SqlDataReader reader_land_info_4 = command_land_info_4.ExecuteReader())
+                                                                {
+                                                                    if (reader_land_info_4.Read())
+                                                                    {
+                                                                        landPurpose = reader_land_info_4["tenNguonGocSuDungDat"].ToString();
+                                                                    }
+                                                                }
+                                                            }
                                                         }
                                                     }
                                                 }
-                                            }
 
-                                            if(landCount > 1)
+                                                //lay ra hinh thuc su dung
+                                                string check_land = reader_21["dongSuDung"].ToString();
+                                                if (check_land == "1")
+                                                {
+                                                    landUse = "Sử dụng chung";
+                                                }
+                                                else
+                                                {
+                                                    landUse = "Sử dụng riêng";
+                                                }
+
+                                                //lay ra so thu tu thua, so hieu ban do, dien tich, thoi han su dung
+                                                using (SqlCommand command_land_info = new SqlCommand("SELECT soThuTuThua,soHieuToBanDo,dienTich,thoiHanSuDung FROM dbo.DaMucDichSuDung WHERE thuaDatId = @Id", conn))
+                                                {
+                                                    command_land_info.Parameters.AddWithValue("@Id", thuaDatId);
+                                                    using (SqlDataReader reader_land_info = command_land_info.ExecuteReader())
+                                                    {
+                                                        if (reader_land_info.Read())
+                                                        {
+                                                            landNumber = reader_land_info["soThuTuThua"].ToString();
+                                                            landMapNumber = reader_land_info["soHieuToBanDo"].ToString();
+                                                            landArea = reader_land_info["dienTich"].ToString();
+                                                            landUseDate = reader_land_info["thoiHanSuDung"].ToString();
+                                                        }
+                                                    }
+                                                }
+
+                                                //lay ra dia chi, loai dat
+                                                using (SqlCommand command_land_info_2 = new SqlCommand("SELECT diaChi,khuDanCu,datDoThi FROM dbo.ThuaDat WHERE thuaDatId = @Id", conn))
+                                                {
+                                                    command_land_info_2.Parameters.AddWithValue("@Id", thuaDatId);
+                                                    using (SqlDataReader reader_land_info_2 = command_land_info_2.ExecuteReader())
+                                                    {
+                                                        if (reader_land_info_2.Read())
+                                                        {
+                                                            landAddress = reader_land_info_2["diaChi"].ToString();
+                                                            string check_dancu = reader_land_info_2["khuDanCu"].ToString();
+                                                            string check_dothi = reader_land_info_2["datDoThi"].ToString();
+                                                            if (check_dancu == "1" && check_dothi == "0")
+                                                            {
+                                                                landClass = "Khu dân cư";
+                                                            }
+                                                            else if (check_dancu == "0" && check_dothi == "1")
+                                                            {
+                                                                landClass = "Đất đô thị";
+                                                            }
+                                                            else
+                                                            {
+                                                                landClass = "Khu dân cư và Đất đô thị";
+                                                            }
+                                                        }
+                                                    }
+                                                }
+
+                                                dataLand.Muc2.Add(landCount, new Land
+                                                {
+                                                    LandNumber = landNumber,
+                                                    LandMapNumber = landMapNumber,
+                                                    LandArea = landArea,
+                                                    LandClass = landClass,
+                                                    LandUseDate = landUseDate,
+                                                    LandUse = landUse,
+                                                    LandAddress = landAddress,
+                                                    LandPurpose = landPurpose
+                                                });
+                                                dataLand.IsCheckMuc2 = checkMuc2;
+                                                landCount++;
+                                            }
+                                        }
+                                        //truong hop 1 thua dat
+                                        else
+                                        {
+                                            landCount = 1;
+                                            checkMuc2 = false;
+
+                                            //1 thua dat nhieu muc dich su dung
+                                            if (landCount > 1)
                                             {
                                                 string query_loai = "WITH NumberRanges AS (SELECT @Id AS StartNumber,(SELECT MIN(thuaDatId) FROM dbo.NguonGocGiaoDat WHERE thuaDatId > @Id) AS NextNumber) SELECT daMucDichSuDungId,loaiNguonGocSuDungDatId FROM dbo.NguonGocGiaoDat, NumberRanges WHERE thuaDatId IS NULL AND thuaDatId BETWEEN StartNumber AND NextNumber";
                                                 using (SqlCommand command_loai = new SqlCommand(query_loai, conn))
@@ -537,20 +609,20 @@ namespace WindowsFormsApp1
                                                     command_loai.Parameters.AddWithValue("@Id", thuaDatId);
                                                     using (SqlDataReader reader_loai = command_loai.ExecuteReader())
                                                     {
-                                                        List<string> results = new List<string>();
+                                                        List<string> results_1 = new List<string>();
                                                         string daMd = "";
                                                         if (reader_loai.Read())
                                                         {
-                                                            string check = reader_loai["loaiNguonGocSuDungDatId"].ToString();
+                                                            string check_1 = reader_loai["loaiNguonGocSuDungDatId"].ToString();
                                                             daMd = reader_loai["daMucDichSuDungId"].ToString();
 
-                                                            results.Add(check);
+                                                            results_1.Add(check_1);
                                                         }
 
                                                         List<string> sameValues = new List<string>();
                                                         List<string> uniqueValues = new List<string>();
 
-                                                        var groupedValues = results.GroupBy(x => x)
+                                                        var groupedValues = results_1.GroupBy(x => x)
                                                                                   .Select(g => new { Value = g.Key, Count = g.Count() });
 
                                                         foreach (var item in groupedValues)
@@ -570,7 +642,7 @@ namespace WindowsFormsApp1
                                                         //tat ca loai nguon goc trung nhau
                                                         if (allSame)
                                                         {
-                                                            foreach (var item in results)
+                                                            foreach (var item in results_1)
                                                             {
                                                                 string loaiNg = reader_loai["loaiNguonGocSuDungDatId"].ToString();
 
@@ -603,7 +675,7 @@ namespace WindowsFormsApp1
                                                                     }
                                                                 }
 
-                                                                dataLand.Muc2.Add(0,new Land
+                                                                dataLand.Muc2.Add(0, new Land
                                                                 {
                                                                     LandPurpose = landPurpose,
                                                                 });
@@ -623,7 +695,7 @@ namespace WindowsFormsApp1
                                                                     {
                                                                         if (reader_ten.Read())
                                                                         {
-                                                                                landPurpose = reader_ten["tenNguonGocSuDungDat"].ToString() + ": ";
+                                                                            landPurpose = reader_ten["tenNguonGocSuDungDat"].ToString() + ": ";
                                                                         }
                                                                     }
                                                                 }
@@ -642,7 +714,7 @@ namespace WindowsFormsApp1
                                                                 }
                                                             }
 
-                                                            foreach(var value in uniqueValues)
+                                                            foreach (var value in uniqueValues)
                                                             {
                                                                 string loaiNg = value;
                                                                 using (SqlCommand command_ten = new SqlCommand("SELECT tenNguonGocSuDungDat FROM dbo.LoaiNguonGocSuDungDat WHERE loaiNguonGocSuDungDatId = @Id", conn))
@@ -652,7 +724,7 @@ namespace WindowsFormsApp1
                                                                     {
                                                                         if (reader_ten.Read())
                                                                         {
-                                                                               landPurpose += reader_ten["tenNguonGocSuDungDat"].ToString() + ": ";
+                                                                            landPurpose += reader_ten["tenNguonGocSuDungDat"].ToString() + ": ";
                                                                         }
                                                                     }
                                                                 }
@@ -670,6 +742,11 @@ namespace WindowsFormsApp1
                                                                 }
                                                             }
 
+                                                            dataLand.Muc2.Add(0, new Land
+                                                            {
+                                                                LandPurpose = landPurpose,
+                                                            });
+                                                            landPurpose = "";
                                                         }
 
                                                         using (SqlCommand command_same = new SqlCommand("SELECT dienTich,suDungChung FROM dbo.DaMucDichSuDung WHERE daMucDichSuDungId = @Id", conn))
@@ -680,25 +757,26 @@ namespace WindowsFormsApp1
                                                                 while (reader_same.Read())
                                                                 {
                                                                     string check_same = reader_same["suDungChung"].ToString();
-                                                                    if(check_same == "1")
+                                                                    if (check_same == "1")
                                                                     {
                                                                         int area = int.Parse(reader_same["dienTich"].ToString());
                                                                         area = area + int.Parse(reader_same["dienTich"].ToString());
-                                                                        landUse = "Sử dụng chung : "+area+" m2";
+                                                                        landUse = "Sử dụng chung : " + area + " m2";
                                                                     }
                                                                     else
                                                                     {
                                                                         int area = int.Parse(reader_same["dienTich"].ToString());
                                                                         area = area + int.Parse(reader_same["dienTich"].ToString());
-                                                                        landUse = "Sử dụng riêng : "+area+" m2";
+                                                                        landUse = "Sử dụng riêng : " + area + " m2";
                                                                     }
                                                                 }
                                                             }
                                                         }
-}
                                                     }
                                                 }
+                                            }
 
+                                            //1 thua dat 1 muc dich su dung
                                             else
                                             {
                                                 //lay ra nguon goc su dung
@@ -737,19 +815,21 @@ namespace WindowsFormsApp1
                                                 }
                                             }
 
-                                            dataLand.Muc2.Add(landCount, new Land
-                                            {
-                                                LandNumber = landNumber,
-                                                LandMapNumber = landMapNumber,
-                                                LandArea = landArea,
-                                                LandClass = landClass,
-                                                LandUseDate = landUseDate,
-                                                LandUse = landUse,
-                                                LandAddress = landAddress,
-                                                LandPurpose = landPurpose
-                                            });
-                                            landCount++;
+
                                         }
+                                        dataLand.Muc2.Add(landCount, new Land
+                                        {
+                                            LandNumber = landNumber,
+                                            LandMapNumber = landMapNumber,
+                                            LandArea = landArea,
+                                            LandClass = landClass,
+                                            LandUseDate = landUseDate,
+                                            LandUse = landUse,
+                                            LandAddress = landAddress,
+                                            LandPurpose = landPurpose
+                                        });
+                                        dataLand.IsCheckMuc2 = checkMuc2;
+                                        landCount++;
 
                                     }
                                 }
@@ -1174,7 +1254,7 @@ namespace WindowsFormsApp1
                                                             {
                                                                 string assetId = "";
                                                                 List<int> results = new List<int>();
-                                                                if (reader_10.Read())
+                                                                while (reader_10.Read())
                                                                 {
                                                                     assetId = reader_10["nhaId"].ToString();
                                                                     int check = 0;
